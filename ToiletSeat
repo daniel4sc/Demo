@@ -1,0 +1,50 @@
+答案是3，即always leave the seat as you would like to find it。
+事实上1和2是一样的，因为U和D是二元情况之一，所以可以整体相互替换，完全同理。
+对于3的情况，之所以是最efficient，可以从改变次数的视角，考虑i和i-1两个相邻元素
+若i与i-1不同, 那只需要改变一次。这会少于1或2中强制U或者D时会有两次改变的情况。
+若i与i-1相同，就不需要改变。
+最坏的情况，每个人都是不一样的，那也最多只需要改变n-1次，在这种情况下采用1和2方法，也不会少于n-1。
+综上，3是最优解。
+
+或者直接用代码说话，java伪代码按逻辑分情况实现如下，可以得出具体次数：
+        initPos = array.get(0);
+        firstPerson = array.get(1);
+
+        //Scenario 1: Always leave it up
+        for(i = 2; i < array.size(); i++){
+            if(array.get(i) != 'U') {                   
+		sc1 += 2;            //Twice for each difference
+	}
+        }
+        //Handle the initial position and first person
+        if(initPos == 'D' && first == 'U'){      sc1 ++;      }
+        if(initPos == 'D' && first == 'D'){      sc1 ++;      }
+        if(initPos == 'U' && first == 'D'){      sc1 += 2;   }
+
+        //Senario 2: Always leave it down
+        for(i = 2; i < array.size(); i++){
+            if(array.get(i) != 'D') {
+                    sc2 += 2;                    //Twice for each difference
+            }
+        }
+        //Handle the initial position and first person
+        if(initPos == 'U' && first == 'D'){      sc2 ++;      }
+        if(initPos == 'U' && first == 'U'){      sc2 ++;      }
+        if(initPos == 'D' && first == 'U'){       sc2 += 2;  }
+
+        //Senario 3: Always leave the seat as you would like to find it
+        lastPerson = array.get(1);
+        for(i = 2; i < array.size(); i++){
+            if(array.get(i) != lastPerson) {
+                sc3 ++;                         //Once only for each difference
+            }
+            lastPerson = array.get(i);
+        }
+        //Handle the initial position and first person
+        if(initPos == 'D' && first == 'U'){      sc3 += 1;     }
+        if(initPos == 'U' && first == 'D'){      sc3 += 1;     }
+       
+       //Output results
+        println(sc1);
+        println(sc2);
+        println(sc3);
